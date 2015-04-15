@@ -12,6 +12,7 @@
 		char **inventaire; //Tableau de caractères représentant l'inventaire
 	} joueur;
 	
+	joueur def_inventaire (joueur j1);
 	Grille posjoueur (Grille g1, joueur j1); //Position actuelle du joueur
 	Grille retiretrace (Grille g1, joueur j1); //Retire le # du joueur à la case d'avant
 	joueur deplacement (Grille g1, joueur j1); //Déplace le joueur
