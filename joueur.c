@@ -1,0 +1,182 @@
+#include "grille.h"
+#include "joueur.h"
+#include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+Grille posjoueur (Grille g1, joueur j1)
+{
+	g1.g[j1.posn][j1.posm] = 8;
+	
+	return g1;
+}
+
+Grille retiretrace (Grille g1, joueur j1)
+{
+	g1.g[j1.posn][j1.posm] = 0;
+	
+	return g1;
+}
+
+joueur deplacement (Grille g1, joueur j1)
+{
+	initscr();
+
+	int a = getch();
+	
+	switch (a)
+	{
+		case 'z': clear();
+				  if (g1.g[(j1.posn) - 1][j1.posm] == 1 || (j1.posn - 1) < 0)
+				  {
+					  clear();
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  else
+				  {
+					  switch (g1.g[(j1.posn) - 1][j1.posm])
+					  {
+						  case 2 : j1.pv += 10;
+								   break;
+								   
+						  case 3 : j1.atk += 3;
+								   break;
+								   
+						  case 4 : j1.def += 3;
+						  
+						  default :  afficheGrillew(g1);
+									 refresh();
+					  }
+					  clear();
+					  retiretrace(g1, j1);
+					  j1.posn --;
+					  posjoueur(g1, j1);
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  break;
+					 
+		case 'd': clear();
+				  if (g1.g[j1.posn][(j1.posm) + 1] == 1 || (j1.posm + 1) > g1.m-1)
+				  {
+					  clear();
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  else
+				  {
+					  switch (g1.g[j1.posn][(j1.posm) + 1])
+					  {
+						  case 2 : j1.pv += 10;
+								   break;
+								   
+						  case 3 : j1.atk += 3;
+								   break;
+								   
+						  case 4 : j1.def += 3;
+						  
+						  default :  afficheGrillew(g1);
+									 refresh();
+					  }
+					  clear();
+					  retiretrace(g1, j1);
+					  j1.posm ++;
+					  posjoueur(g1, j1);
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  break;
+
+		case 's': clear();
+				  if (g1.g[(j1.posn) + 1][j1.posm] == 1 || (j1.posn + 1) > g1.n-1)
+				  {
+					  clear();
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  else
+				  {
+					  switch (g1.g[(j1.posn) + 1][j1.posm])
+					  {
+						  case 2 : j1.pv += 10;
+								   break;
+								   
+						  case 3 : j1.atk += 3;
+								   break;
+								   
+						  case 4 : j1.def += 3;
+						  
+						  default :  afficheGrillew(g1);
+									 refresh();
+					  }
+					  clear();
+					  retiretrace(g1, j1);
+					  j1.posn ++;
+					  posjoueur(g1, j1);
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  break;
+				  
+		case 'q': clear();
+				  if (g1.g[j1.posn][(j1.posm) - 1] == 1 || (j1.posm - 1) < 0)
+				  {
+					  clear();
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				  else
+				  {
+					  switch (g1.g[j1.posn][(j1.posm) - 1])
+					  {
+						  case 2 : j1.pv += 10;
+								   break;
+								   
+						  case 3 : j1.atk += 3;
+								   break;
+								   
+						  case 4 : j1.def += 3;
+						  
+						  default :  afficheGrillew(g1);
+									 refresh();
+					  }
+					  retiretrace(g1, j1);
+					  j1.posm --;
+					  clear();
+					  posjoueur(g1, j1);
+					  afficheGrillew(g1);
+					  refresh();
+				  }
+				   break;
+		
+		default: clear();
+				 afficheGrillew(g1);
+				 refresh();
+	}
+	
+	return j1;
+}
+				  
+joueur type_salle (Grille g1, joueur j1)
+{
+	switch (g1.effect)
+	{
+		case 1 : j1.pv --;
+				 break;
+		
+		case 2 : if (j1.pv >= j1.pvmax)
+				 {
+					 j1.pv = j1.pv;
+				 }
+				 else
+				 {
+					j1.pv ++;
+				 }
+				 break;
+		
+		default : ;
+	}
+	
+	return j1;
+}
