@@ -180,3 +180,28 @@ joueur type_salle (Grille g1, joueur j1)
 	
 	return j1;
 }
+
+int chemin_valide (joueur *chemin, Grille g1, int nbdeplacements)
+{
+	int i;
+	int test = 0;
+	
+	for (i = 0; i < nbdeplacements; i++)
+	{
+		if (g1.g[chemin[i].posn][chemin[i].posm] == 1)
+		{
+			test = 1;
+		}
+	}
+	
+	if (test == 0)
+	{
+		printf("\nLe chemin est valide\n");
+	}
+	else
+	{
+		printf("\nLe chemin n'est pas valide\n");
+	}
+
+	return test;
+}

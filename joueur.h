@@ -16,4 +16,5 @@
 	Grille retiretrace (Grille g1, joueur j1);
 	joueur deplacement (Grille g1, joueur j1);
 	joueur type_salle (Grille g1, joueur j1);
+	int chemin_valide (joueur *chemin, Grille g1, int nbdeplacements);
 #endif
