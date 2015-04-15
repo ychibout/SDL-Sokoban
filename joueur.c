@@ -4,6 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+joueur def_inventaire (joueur j1)
+{
+	int i;
+	j1.inventaire = (int**) malloc (10 * sizeof(int*));
+	
+	for (i = 0; i < 10; i++)
+	{
+		j1.inventaire[i] = "-------------------\n";
+	}
+} 
+
 Grille posjoueur (Grille g1, joueur j1)
 {
 	g1.g[j1.posn][j1.posm] = 8;

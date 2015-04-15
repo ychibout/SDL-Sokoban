@@ -38,7 +38,9 @@ int main(int argc, char **argv)
 		
 		printw("\nPV : %d", j1.pv);
 		printw("\nAttack : %d", j1.atk);
-		printw("\nDefence : %d", j1.def);
+		printw("\nDefence : %d\n\n", j1.def);
+		printw("Inventaire : \n");
+		def_inventaire(j1);
 		
 		j1 = deplacement(g1, j1);
 		j1 = type_salle(g1, j1);

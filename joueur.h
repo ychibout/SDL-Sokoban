@@ -9,7 +9,7 @@
 		int atk; // points d'attaque
 		int def; //points de défense
 		int pvmax; //maximum de point de vie (définie pour chaque joueur)
-		int **inventaire; //Tableau de caractères représentant l'inventaire
+		char **inventaire; //Tableau de caractères représentant l'inventaire
 	} joueur;
 	
 	Grille posjoueur (Grille g1, joueur j1); //Position actuelle du joueur
