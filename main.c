@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	
 	while(1)
 	{
-		if (j1.pv == 0)
+		if (j1.pv == 0) //Exemple : salles faisant des dégats
 		{
 			clear();
 			printw("Game Over");

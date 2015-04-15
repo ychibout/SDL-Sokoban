@@ -196,11 +196,13 @@ int chemin_valide (joueur *chemin, Grille g1, int nbdeplacements)
 	
 	if (test == 0)
 	{
-		printf("\nLe chemin est valide\n");
+		printw("\nLe chemin est valide\n");
+		refresh();
 	}
 	else
 	{
-		printf("\nLe chemin n'est pas valide\n");
+		printw("\nLe chemin n'est pas valide\n");
+		refresh();
 	}
 
 	return test;
