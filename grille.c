@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include "grille.h"
 
+/**
+* @file		grille.c
+* @author	Yanis Chibout
+* @version	1.0
+* @date		avril 2015
+* @brief	Fonctions liée à la grille
+*/
+
 Grille creerGrille (Grille g1)
 {
 	g1.g = (int **) malloc (g1.n * sizeof(int*));
@@ -172,3 +180,20 @@ void afficheGrillew (Grille g1) //Les bords doivent être contenus dans le fichi
 		refresh();
 	}
 }
+
+/*
+void rotation (grille g1)
+{
+	int i, j, temp;
+
+	for (i = 0; i < g1.n; i++)
+	{
+		for (j = 0; j < g1.m; j++)
+		{
+			temp = g1.g[i][j];
+			g1.g[i][j] = g1.g[j][i];
+			g1.g[j][i] = temp;
+		}
+	}
+}
+*/

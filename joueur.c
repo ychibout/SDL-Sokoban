@@ -4,16 +4,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+* @file		joueur.c
+* @author	Yanis Chibout
+* @version 	1.0
+* @date		avril 2015
+* @brief 	fonction correspondant au joueur
+*/
+
 joueur def_inventaire (joueur j1)
 {
 	int i;
-	j1.inventaire = (int**) malloc (10 * sizeof(int*));
+	j1.inventaire = (char**) malloc (10 * sizeof(char*));
 	
 	for (i = 0; i < 10; i++)
 	{
-		j1.inventaire[i] = "-------------------\n";
+		j1.inventaire[i] ="------------------------";
 	}
-} 
+
+	return j1;
+}
+
+/*void affiche_inventaire (joueur j1)
+{
+	int i;
+
+	for (i = 0; i < 10; i++)
+	{
+		printw("%s\n", j1.inventaire[i]);
+		refresh();
+	}
+} */
 
 Grille posjoueur (Grille g1, joueur j1)
 {

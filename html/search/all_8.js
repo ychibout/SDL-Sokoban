@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['m',['m',['../structGrille.html#a0adc4cb10f20beb040589e30163fa423',1,'Grille']]],
-  ['main',['main',['../main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.c']]],
-  ['main_2ec',['main.c',['../main_8c.html',1,'']]]
+  ['n',['n',['../structGrille.html#a4ab88fa8e3b9e3c43ab6f90b303bd718',1,'Grille']]],
+  ['nbcasesnonvides',['nbcasesnonvides',['../grille_8c.html#a83de7a9ea474dd4c1207f0bbb1b1e3d2',1,'nbcasesnonvides(Grille g1):&#160;grille.c'],['../grille_8h.html#a83de7a9ea474dd4c1207f0bbb1b1e3d2',1,'nbcasesnonvides(Grille g1):&#160;grille.c']]]
 ];

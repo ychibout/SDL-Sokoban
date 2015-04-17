@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['atk',['atk',['../structjoueur.html#a8b4a6efd20227795b484abc81995b8ce',1,'joueur']]]
+  ['effect',['effect',['../structGrille.html#af508802e545b1e16a2a551d297bc5e9b',1,'Grille']]]
 ];
