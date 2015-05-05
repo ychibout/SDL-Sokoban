@@ -1,5 +1,5 @@
-#include "grille.h"
-#include "joueur.h"
+#include "../include/grille.h"
+#include "../include/joueur.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>

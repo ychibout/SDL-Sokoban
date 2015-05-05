@@ -1,8 +1,9 @@
-#include "grille.h"
-#include "joueur.h"
+#include "../include/grille.h"
+#include "../include/joueur.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "SDL.h"
+#include "SDL_Image"
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 320
@@ -21,7 +22,7 @@ int main(int argc, char* argv[])
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
-	int colorkey, colorRect, gameover;
+	int colorkey, gameover;
 	
 	SDL_Init(SDL_INIT_VIDEO); //initialisation de la fenêtre
 	

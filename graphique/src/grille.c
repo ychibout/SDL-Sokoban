@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "grille.h"
+#include "../include/grille.h"
 
 /**
 * @file		grille.c
@@ -33,8 +33,6 @@ Grille creerGrille (Grille g1)
 
 Grille lirefichier (char *fichier) //Les bords doivent être contenus dans le fichier de la grille
 {
-	char line[100];
-	
 	int i, j;
 	Grille g1;
 	
