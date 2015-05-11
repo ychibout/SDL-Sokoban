@@ -19,7 +19,8 @@ int main(int argc, char* argv[])
 	joueur j1; //Création d'un nouveau joueur
 	j1.posn = 0; 
 	j1.posm = 0;
-	
+	posjoueur(g1, j1);
+		
 	SDL_Surface *screen, *temp, *sprite, *grass, *wall; //Création de surfaces SDL
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
@@ -93,48 +94,91 @@ int main(int argc, char* argv[])
 		
 		keystate = SDL_GetKeyState(NULL); //L'utilisateur entre une touche qui sera contenue dans keystate
 		
-		if (keystate[SDLK_LEFT] ) { //Cas de la touche fléchée gauche
-			if (g1.g[j1.posn][j1.posm - 1] == 0) { //Si la case à gauche du joueur est libre
-				j1.posm--;
-				g1 = posjoueur(g1, j1); //Placement du joueur dans la grille aux cases correspondantes
-				rcSprite.x -= STEP_SIZE;
-				retiretrace(g1, j1); //Retire la présence précédente du joueur dans la grille
+		int tempn = j1.posn;
+		int tempm = j1.posm;
+		
+		if (keystate[SDLK_LEFT] ) 
+		{ 
+			if (j1.posm-1 >= 0) 
+			{ 
+				if (g1.g[j1.posn][j1.posm-1] == 0) 
+				{
+					j1.posm--;
+					g1 = posjoueur(g1, j1); //Placement du joueur dans la grille aux cases correspondantes
+					rcSprite.x -= STEP_SIZE;
+					retiretrace(g1, j1); //Retire la présence précédente du joueur dans la grille
+				}
+				else 
+				{
+					j1.posm = tempm;
+				}
 			}
-			else {
-				rcSprite.x = rcSprite.x;
-			}
-		}
-		if (keystate[SDLK_RIGHT] ) { //Cas de la touche fléchée droite
-			if (g1.g[j1.posn][j1.posm + 1] == 0) { //Si la case à droite du joueur est libre
-				j1.posm++;
-				g1 = posjoueur(g1, j1);
-				rcSprite.x += STEP_SIZE;
-				retiretrace(g1, j1);
-			}
-			else {
-				rcSprite.x = rcSprite.x;
-			}
-		}
-		if (keystate[SDLK_UP] ) { //Cas de la touche fléchée haut
-			if (g1.g[j1.posn - 1][j1.posm] == 0){
-				j1.posn--;
-				g1 = posjoueur(g1, j1);
-				rcSprite.y -= STEP_SIZE;
-				retiretrace(g1, j1);
-			}
-			else {
-				rcSprite.y = rcSprite.y;
+			else 
+			{
+				j1.posm = 0;
 			}
 		}
-		if (keystate[SDLK_DOWN] ) { //Cas de la touche fléchée bas
-			if (g1.g[j1.posn++][j1.posm] == 0) {
-				j1.posn++;
-				g1 = posjoueur(g1, j1);
-				rcSprite.y += STEP_SIZE;
-				retiretrace(g1, j1);
+		if (keystate[SDLK_RIGHT] ) 
+		{
+			if (j1.posm+1 <= SCREEN_WIDTH/STEP_SIZE) 
+			{
+				if (g1.g[j1.posn][j1.posm+1] == 0)
+				{
+					j1.posm++;
+					g1 = posjoueur(g1, j1);
+					rcSprite.x += STEP_SIZE;
+					retiretrace(g1, j1);
+				}
+				else
+				{
+					j1.posm = tempm;
+				}
 			}
-			else {
-				rcSprite.y = rcSprite.y;
+			else 
+			{
+				j1.posm = SCREEN_WIDTH/STEP_SIZE;
+			}
+		}
+		if (keystate[SDLK_UP] ) 
+		{
+			if (j1.posn-1 >= 0)
+			{
+				if (g1.g[j1.posn - 1][j1.posm] == 0) 
+				{
+					j1.posn--;
+					g1 = posjoueur(g1, j1);
+					rcSprite.y -= STEP_SIZE;
+					retiretrace(g1, j1);
+				}
+				else 
+				{
+					j1.posn = tempn;
+				}
+			}
+			else 
+			{
+				j1.posn = 0;
+			}
+		}
+		if (keystate[SDLK_DOWN] ) 
+		{
+			if (j1.posn+1 <= SCREEN_HEIGHT/STEP_SIZE) 
+			{
+				if (g1.g[j1.posn++][j1.posm] == 0)
+				{
+					j1.posn++;
+					g1 = posjoueur(g1, j1);
+					rcSprite.y += STEP_SIZE;
+					retiretrace(g1, j1);
+				}
+				else 
+				{
+					j1.posn = tempn;
+				}
+			}
+			else
+			{
+				j1.posn = SCREEN_HEIGHT/STEP_SIZE;
 			}
 		}
 		
@@ -161,7 +205,7 @@ int main(int argc, char* argv[])
 		{
 			for (y = 0; y < SCREEN_HEIGHT/SPRITE_SIZE; y++)
 			{
-				if (g1.g[x][y] == 0) //Si a cet endroit de la grille c'est libre
+				if (g1.g[y][x] == 0) //Si a cet endroit de la grille c'est libre
 				{
 					rcGrass.x = x * SPRITE_SIZE; //Déplacement du "curseur" rcGrass à cet endroit
 					rcGrass.y = y * SPRITE_SIZE;
