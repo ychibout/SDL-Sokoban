@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "../include/grille.h"
+#include "grille.h"
 
 /**
 * @file		grille.c

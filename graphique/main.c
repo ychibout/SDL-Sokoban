@@ -1,9 +1,9 @@
-#include "../include/grille.h"
-#include "../include/joueur.h"
+#include "grille.h"
+#include "joueur.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "SDL.h"
-#include "SDL_Image"
+#include "SDL_image.h"
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 320
@@ -13,6 +13,8 @@
 int main(int argc, char* argv[])
 {	
 	Grille g1 = lirefichier(argv[1]); //Création d'une nouvelle grille à partir d'un fichier chargé
+	
+	//La grille servira de contrôleur mais l'utilisateur ne la voit jamais : il ne voit que l'interface graphique qui en découlera
 	
 	joueur j1; //Création d'un nouveau joueur
 	j1.posn = 0; 
