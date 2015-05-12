@@ -6,7 +6,7 @@
 #include "SDL_image.h"
 
 #define SCREEN_WIDTH  320
-#define SCREEN_HEIGHT 320
+#define SCREEN_HEIGHT 288
 #define SPRITE_SIZE    32
 #define STEP_SIZE 32
 
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	j1.posm = 0;
 	posjoueur(g1, j1);
 		
-	SDL_Surface *screen, *temp, *sprite, *grass, *wall; //Création de surfaces SDL
+	SDL_Surface *screen, *temp, *sprite, *grass, *wall, *black; //Création de surfaces SDL
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
@@ -29,12 +29,16 @@ int main(int argc, char* argv[])
 	
 	SDL_Init(SDL_INIT_VIDEO); //initialisation de la fenêtre
 	
-	SDL_WM_SetCaption("Exemple SDL", "Exemple SDL"); //Définission du titre de la fenêtre
+	SDL_WM_SetCaption("Youssef Rizk Présente : ", "Youssef Rizk Présente : "); //Définission du titre de la fenêtre
 	
 	screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0); //Création de la fenêtre
 	
 	temp   = SDL_LoadBMP("mushroom.bmp"); //Chargement du sprite mushroom.bmp dans la surface sprite
 	sprite = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp   = SDL_LoadBMP("black.bmp"); //Chargement du sprite black.bmp dans la surface sprite
+	black = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
 	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite
@@ -164,7 +168,7 @@ int main(int argc, char* argv[])
 		{
 			if (j1.posn+1 <= SCREEN_HEIGHT/STEP_SIZE) 
 			{
-				if (g1.g[j1.posn++][j1.posm] == 0)
+				if (g1.g[j1.posn+1][j1.posm] == 0)
 				{
 					j1.posn++;
 					g1 = posjoueur(g1, j1);
@@ -184,7 +188,7 @@ int main(int argc, char* argv[])
 		
 		//Traitement des cas de collision avec les bords de l'écran
 		
-		if ( rcSprite.x < 0 ) {
+		/*if ( rcSprite.x < 0 ) {
 			rcSprite.x = 0;
 		}
 		else if ( rcSprite.x > SCREEN_WIDTH-SPRITE_SIZE ) {
@@ -195,7 +199,7 @@ int main(int argc, char* argv[])
 		}
 		else if ( rcSprite.y > SCREEN_HEIGHT-SPRITE_SIZE ) {
 			rcSprite.y = SCREEN_HEIGHT-SPRITE_SIZE;
-		}
+		}*/
 		
 		// Placement des images en fonction de la grille => Création de l'aire de jeu
 		
@@ -205,13 +209,13 @@ int main(int argc, char* argv[])
 		{
 			for (y = 0; y < SCREEN_HEIGHT/SPRITE_SIZE; y++)
 			{
-				if (g1.g[y][x] == 0) //Si a cet endroit de la grille c'est libre
+				if (g1.g[y][x] == 0 || g1.g[y][x] == 8)//Si a cet endroit de la grille c'est libre
 				{
 					rcGrass.x = x * SPRITE_SIZE; //Déplacement du "curseur" rcGrass à cet endroit
 					rcGrass.y = y * SPRITE_SIZE;
 					SDL_BlitSurface(grass, NULL, screen, &rcGrass); //Placement de l'image grass à cet endroit
 				}
-				else //L'autre solution (c à d) quand il y a un mur
+				else if (g1.g[y][x] == 1) // Si à cet endroit il ya un mur
 				{
 					rcGrass.x = x * SPRITE_SIZE;
 					rcGrass.y = y * SPRITE_SIZE;
