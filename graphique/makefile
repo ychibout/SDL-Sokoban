@@ -8,18 +8,18 @@ BPATH = bin
 IPATH = include
 SPATH = src
 
-$(EXE) : main.o grille.o joueur.o
+$(EXE) : $(OPATH)/main.o $(OPATH)/grille.o $(OPATH)/joueur.o
 	$(CC) $(SDLFLAGS) -o $@ $(CFLAGS) $^ $(C99)
-	mv $@ $(BPATH)
+	mv $(EXE) $(BPATH)/
 
-grille.o : grille.c grille.h 
+$(OPATH)/grille.o : $(SPATH)/grille.c $(IPATH)/grille.h 
 	$(CC) -c $(CFLAGS) $<
 	
-joueur.o : joueur.c joueur.h
+$(OPATH)/joueur.o : $(SPATH)/joueur.c $(IPATH)/joueur.h
 	$(CC) -c $(CFLAGS) $<
 	
-main.o : main.c grille.h joueur.h
+main.o : $(SPATH)/main.c $(IPATH)/grille.h $(IPATH)/joueur.h
 	$(CC) $(SDLFLAGS) -c $(CFLAGS) $<
 
 clean:
-	rm $(EXE)
+	rm $(BPATH)/$(EXE)
