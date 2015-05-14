@@ -18,8 +18,10 @@ $(OPATH)/grille.o : $(SPATH)/grille.c $(IPATH)/grille.h
 $(OPATH)/joueur.o : $(SPATH)/joueur.c $(IPATH)/joueur.h
 	$(CC) -c $(CFLAGS) $<
 	
-main.o : $(SPATH)/main.c $(IPATH)/grille.h $(IPATH)/joueur.h
+$(OPATH)/main.o : $(SPATH)/main.c $(IPATH)/grille.h $(IPATH)/joueur.h
 	$(CC) $(SDLFLAGS) -c $(CFLAGS) $<
 
 clean:
+	rm $(OPATH)/*
 	rm $(BPATH)/$(EXE)
+	

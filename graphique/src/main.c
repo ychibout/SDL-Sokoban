@@ -1,9 +1,20 @@
+/**
+* @file     main.c
+* @author   Yanis Chibout / Youssef Rizk
+* @version  1.1
+* @date     mai 2015
+* @brief    fichier pricipal pour l'interface graphique
+*/
+
+
 #include "grille.h"
 #include "joueur.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "SDL.h"
 #include "SDL_image.h"
+
+/*Définission des constantes de création de la fenêtre*/
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 288
@@ -17,11 +28,14 @@ int main(int argc, char* argv[])
 	//La grille servira de contrôleur mais l'utilisateur ne la voit jamais : il ne voit que l'interface graphique qui en découlera
 	
 	joueur j1; //Création d'un nouveau joueur
+	
+	//Position de base du joueur en (0,0)
+	
 	j1.posn = 0; 
 	j1.posm = 0;
 	posjoueur(g1, j1);
 		
-	SDL_Surface *screen, *temp, *sprite, *grass, *wall, *black; //Création de surfaces SDL
+	SDL_Surface *screen, *temp, *sprite, *grass, *wall; //Création de surfaces SDL
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
@@ -37,11 +51,7 @@ int main(int argc, char* argv[])
 	sprite = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
-	temp   = SDL_LoadBMP("black.bmp"); //Chargement du sprite black.bmp dans la surface sprite
-	black = SDL_DisplayFormat(temp);
-	SDL_FreeSurface(temp);
-	
-	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite mushroom
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey); 
 	
 	temp  = SDL_LoadBMP("grass.bmp"); //Chargement du background grass.bmp dans la surface grass
@@ -55,7 +65,7 @@ int main(int argc, char* argv[])
 	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Transparence du mur
 	SDL_SetColorKey(wall, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
 
-	rcSprite.x = 0; //Le sprite est en (0,0) à la base
+	rcSprite.x = 0; //Le sprite est en (0,0) à la base (comme le joueur)
 	rcSprite.y = 0;
 	
 	gameover = 0; //Si gameover à 1 => Fin du jeu
@@ -64,7 +74,7 @@ int main(int argc, char* argv[])
 	{
 	 if (SDL_PollEvent(&event)) {
 		switch (event.type) {
-			case SDL_QUIT:
+			case SDL_QUIT: //Si le signal est SDL_QUIT
 				gameover = 1;
 				break;
 				
@@ -75,7 +85,7 @@ int main(int argc, char* argv[])
 						gameover = 1; //Alors quitter le jeu
 						break;
 					case SDLK_p: //Si la touche entrée est p
-						while (event.key.keysym.sym != SDLK_p) { //Alors tant que la touche entrée n'est pas p
+						while (event.key.keysym.sym != SDLK_p) { //Alors tant que la touche entrée n'est pas p (ne fonctionne pas)
 							rcSprite.x = rcSprite.x; //Le joueur ne bouge pas
 							rcSprite.y = rcSprite.y;
 						}
@@ -98,33 +108,33 @@ int main(int argc, char* argv[])
 		
 		keystate = SDL_GetKeyState(NULL); //L'utilisateur entre une touche qui sera contenue dans keystate
 		
-		int tempn = j1.posn;
+		int tempn = j1.posn; //On conserve la position actuelle du joueur dans deux variables temporaires
 		int tempm = j1.posm;
 		
 		if (keystate[SDLK_LEFT] ) 
 		{ 
-			if (j1.posm-1 >= 0) 
+			if (j1.posm-1 >= 0) //Si le déplacement n'occasionne pas un dépacement d'écran (problème de mémoire)
 			{ 
-				if (g1.g[j1.posn][j1.posm-1] == 0) 
+				if (g1.g[j1.posn][j1.posm-1] == 0) //Si le joueur ne rencontrera pas un mur
 				{
-					j1.posm--;
+					j1.posm--; //On actualise la grille qui contrôle les déplacements
 					g1 = posjoueur(g1, j1); //Placement du joueur dans la grille aux cases correspondantes
-					rcSprite.x -= STEP_SIZE;
+					rcSprite.x -= STEP_SIZE; //On actualise le déplacement du sprite correspondant
 					retiretrace(g1, j1); //Retire la présence précédente du joueur dans la grille
 				}
 				else 
 				{
-					j1.posm = tempm;
+					j1.posm = tempm; //Le joueur ne bouge pas (il rencontre un mur)
 				}
 			}
 			else 
 			{
-				j1.posm = 0;
+				j1.posm = 0; //Le joueur ne bouge pas (il est en 0)
 			}
 		}
 		if (keystate[SDLK_RIGHT] ) 
 		{
-			if (j1.posm+1 <= SCREEN_WIDTH/STEP_SIZE) 
+			if (j1.posm+1 <= SCREEN_WIDTH/STEP_SIZE) //Si le joueur est tout en bas de l'écran
 			{
 				if (g1.g[j1.posn][j1.posm+1] == 0)
 				{
@@ -140,7 +150,7 @@ int main(int argc, char* argv[])
 			}
 			else 
 			{
-				j1.posm = SCREEN_WIDTH/STEP_SIZE;
+				j1.posm = SCREEN_WIDTH/STEP_SIZE; //Alors il ne bouge pas sous peine d'erreur de segmentation
 			}
 		}
 		if (keystate[SDLK_UP] ) 
@@ -228,7 +238,7 @@ int main(int argc, char* argv[])
 		SDL_UpdateRect(screen,0,0,0,0); //Rafraîchissement de l'écran
 	}
 	
-	//Quand le jeu est quitté :
+	//Quand le jeu est quitté : Libération de mémoire 
 	SDL_FreeSurface(sprite);
 	SDL_FreeSurface(grass);
 	SDL_FreeSurface(wall);

@@ -5,9 +5,9 @@
 /**
 * @file		grille.c
 * @author	Yanis Chibout
-* @version	1.0
-* @date		avril 2015
-* @brief	Fonctions liée à la grille
+* @version	1.1
+* @date		mai 2015
+* @brief	Fonctions liées à la grille
 */
 
 Grille creerGrille (Grille g1)

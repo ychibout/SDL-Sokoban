@@ -4,8 +4,8 @@
 /**
 * @file     joueur.h
 * @author   Yanis Chibout
-* @version  1.0
-* @date     avril 2015
+* @version  1.1
+* @date     mai 2015
 * @brief    header de grille.c
 */
 

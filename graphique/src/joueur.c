@@ -7,9 +7,9 @@
 /**
 * @file		joueur.c
 * @author	Yanis Chibout
-* @version 	1.0
-* @date		avril 2015
-* @brief 	fonction correspondant au joueur
+* @version 	1.1
+* @date		mai 2015
+* @brief 	fonctions correspondant au joueur
 */
 
 Grille posjoueur (Grille g1, joueur j1)

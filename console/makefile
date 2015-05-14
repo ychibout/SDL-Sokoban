@@ -9,3 +9,7 @@ joueur.o : joueur.h joueur.c
 	
 main.o : main.c grille.h joueur.h
 	gcc -c -g main.c
+
+clean :
+	rm *.o
+	rm main
