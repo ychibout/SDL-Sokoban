@@ -7,8 +7,8 @@
 */
 
 
-#include "grille.h"
-#include "joueur.h"
+#include "../include/grille.h"
+#include "../include/joueur.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "SDL.h"
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	j1.posm = 0;
 	posjoueur(g1, j1);
 		
-	SDL_Surface *screen, *temp, *sprite, *grass, *wall; //Création de surfaces SDL
+	SDL_Surface *screen, *temp, *sprite, *grass, *wall, *cloudu, *cloudd, *cloudl, *cloudr; //Création de surfaces SDL
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
@@ -57,6 +57,34 @@ int main(int argc, char* argv[])
 	temp  = SDL_LoadBMP("grass.bmp"); //Chargement du background grass.bmp dans la surface grass
 	grass = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("cloudu.bmp"); //Chargement du background grass.bmp dans la surface grass
+	cloudu = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("cloudd.bmp"); //Chargement du background grass.bmp dans la surface grass
+	cloudd = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("cloudl.bmp"); //Chargement du background grass.bmp dans la surface grass
+	cloudl = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("cloudr.bmp"); //Chargement du background grass.bmp dans la surface grass
+	cloudr = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite mushroom
+	SDL_SetColorKey(cloudu, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+				 
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite mushroom
+	SDL_SetColorKey(cloudd, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);			
+				 
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite mushroom
+	SDL_SetColorKey(cloudl, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);			 
+				 
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite mushroom
+	SDL_SetColorKey(cloudr, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);			 
 				 
 	temp  = SDL_LoadBMP("wall.bmp"); //Chargement de l'image wall.bmp dans la surface wall
 	wall = SDL_DisplayFormat(temp);
