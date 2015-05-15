@@ -15,7 +15,7 @@
 #include "SDL_image.h"
 
 #define SCREEN_WIDTH  320
-#define SCREEN_HEIGHT 288
+#define SCREEN_HEIGHT 320
 #define SPRITE_SIZE    32
 #define STEP_SIZE 32
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	j1.posm = 0;
 	posjoueur(g1, j1);
 		
-	SDL_Surface *screen, *temp, *grass, *wall, *cloudu, *cloudd, *cloudl, *cloudr, *fire;
+	SDL_Surface *screen, *temp, *grass, *wall, *cloudu, *cloudd, *cloudl, *cloudr, *fire, *heart, *eheart, *plife;
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
@@ -43,6 +43,18 @@ int main(int argc, char* argv[])
 	
 	temp  = SDL_LoadBMP("fire.bmp"); 
 	fire = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("life.bmp"); 
+	plife = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("eheart.bmp"); 
+	eheart = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	
+	temp  = SDL_LoadBMP("heart.bmp"); 
+	heart = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
 	temp  = SDL_LoadBMP("grass.bmp"); 
@@ -71,6 +83,15 @@ int main(int argc, char* argv[])
 	
 	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); 
 	SDL_SetColorKey(cloudu, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+	
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); 
+	SDL_SetColorKey(plife, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+	
+	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); 
+	SDL_SetColorKey(eheart, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
+	
+	colorkey = SDL_MapRGB(screen->format, 68, 68, 68); 
+	SDL_SetColorKey(heart, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);
 				 
 	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); 
 	SDL_SetColorKey(cloudd, SDL_SRCCOLORKEY | SDL_RLEACCEL, colorkey);			
@@ -92,9 +113,14 @@ int main(int argc, char* argv[])
 	SDL_BlitSurface(cloudd, NULL, screen, &rcSprite);
 	
 	gameover = 0;
+	int life = 5;
 	
 	while (!gameover)
 	{
+	 if (life == 0)
+	 {
+		 gameover = 1;
+	 }
 	 if (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_QUIT:
@@ -129,38 +155,12 @@ int main(int argc, char* argv[])
 			}
 		}
 		
-		int x, y;
-		
-		for (x = 0; x < SCREEN_WIDTH/SPRITE_SIZE; x++)
-		{
-			for (y = 0; y < SCREEN_HEIGHT/SPRITE_SIZE; y++)
-			{
-				if (g1.g[y][x] == 0 || g1.g[y][x] == 8)
-				{
-					rcGrass.x = x * SPRITE_SIZE; 
-					rcGrass.y = y * SPRITE_SIZE;
-					SDL_BlitSurface(grass, NULL, screen, &rcGrass); 
-				}
-				else if (g1.g[y][x] == 5) 
-				{
-					rcGrass.x = x * SPRITE_SIZE; 
-					rcGrass.y = y * SPRITE_SIZE;
-					SDL_BlitSurface(grass, NULL, screen, &rcGrass);
-					SDL_BlitSurface(fire, NULL, screen, &rcGrass);
-				}
-				else if (g1.g[y][x] == 1) 
-				{
-					rcGrass.x = x * SPRITE_SIZE;
-					rcGrass.y = y * SPRITE_SIZE;
-					SDL_BlitSurface(wall, NULL, screen, &rcGrass); 
-				}
-			}
-		}
 		
 		keystate = SDL_GetKeyState(NULL); 
 		
 		int tempn = j1.posn; 
 		int tempm = j1.posm;
+		int pos;
 		
 		if (keystate[SDLK_LEFT] ) 
 		{ 
@@ -172,16 +172,27 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1); 
 					rcSprite.x -= STEP_SIZE; 
 					retiretrace(g1, j1); 
-					SDL_BlitSurface(cloudl, NULL, screen, &rcSprite); //Changement de sprite : on veut le personnage tourné vers la gauche 
+					pos = 'l'; 
 				}
 				else if (g1.g[j1.posn][j1.posm-1] == 5)
 				{
-					j1.posm--;
-					g1 = posjoueur(g1, j1);
-					rcSprite.x -= STEP_SIZE;
-					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudl, NULL, screen, &rcSprite);
-					gameover = 1;
+					j1.posm--; 
+					g1 = posjoueur(g1, j1); 
+					rcSprite.x -= STEP_SIZE; 
+					retiretrace(g1, j1); 
+					pos = 'l'; 
+					life --;
+					g1.g[9][life] = 3;
+				}
+				else if (g1.g[j1.posn][j1.posm-1] == 6)
+				{
+					j1.posm--; 
+					g1 = posjoueur(g1, j1); 
+					rcSprite.x -= STEP_SIZE; 
+					retiretrace(g1, j1); 
+					pos = 'l'; 
+					life ++;
+					g1.g[9][life-1] = 9;
 				}
 				else 
 				{
@@ -203,7 +214,7 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.x += STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudr, NULL, screen, &rcSprite);
+					pos = 'r';
 				}
 				else if (g1.g[j1.posn][j1.posm+1] == 5)
 				{
@@ -211,8 +222,19 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.x += STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudr, NULL, screen, &rcSprite);
-					gameover = 1;
+					pos = 'r';
+					life --;
+					g1.g[9][life] = 3;
+				}
+				else if (g1.g[j1.posn][j1.posm+1] == 6)
+				{
+					j1.posm++;
+					g1 = posjoueur(g1, j1);
+					rcSprite.x += STEP_SIZE;
+					retiretrace(g1, j1);
+					pos = 'r';
+					life ++;
+					g1.g[9][life-1] = 9;
 				}
 				else
 				{
@@ -234,7 +256,7 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.y -= STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudu, NULL, screen, &rcSprite);
+					pos = 'u';
 				}
 				else if (g1.g[j1.posn - 1][j1.posm] == 5)
 				{
@@ -242,8 +264,19 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.y -= STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudu, NULL, screen, &rcSprite);
-					gameover = 1;
+					pos = 'u';
+					life --;
+					g1.g[9][life] = 3;
+				}
+				else if (g1.g[j1.posn - 1][j1.posm] == 6)
+				{
+					j1.posn--;
+					g1 = posjoueur(g1, j1);
+					rcSprite.y -= STEP_SIZE;
+					retiretrace(g1, j1);
+					pos = 'u';
+					life ++;
+					g1.g[9][life-1] = 9;
 				}
 				else 
 				{
@@ -255,9 +288,10 @@ int main(int argc, char* argv[])
 				j1.posn = 0;
 			}
 		}
+		
 		if (keystate[SDLK_DOWN] ) 
 		{
-			if (j1.posn+1 <= SCREEN_HEIGHT/STEP_SIZE) 
+			if (j1.posn+1 < SCREEN_HEIGHT/STEP_SIZE)
 			{
 				if (g1.g[j1.posn+1][j1.posm] == 0)
 				{
@@ -265,7 +299,7 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.y += STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudd, NULL, screen, &rcSprite);
+					pos = 'd';
 				}
 				else if (g1.g[j1.posn+1][j1.posm] == 5)
 				{
@@ -273,8 +307,19 @@ int main(int argc, char* argv[])
 					g1 = posjoueur(g1, j1);
 					rcSprite.y += STEP_SIZE;
 					retiretrace(g1, j1);
-					SDL_BlitSurface(cloudd, NULL, screen, &rcSprite);
-					gameover = 1;
+					pos = 'd';
+					life --;
+					g1.g[9][life] = 3;
+				}
+				else if (g1.g[j1.posn + 1][j1.posm] == 6)
+				{
+					j1.posn++;
+					g1 = posjoueur(g1, j1);
+					rcSprite.y += STEP_SIZE;
+					retiretrace(g1, j1);
+					pos = 'd';
+					life ++;
+					g1.g[9][life-1] = 9;
 				}
 				else 
 				{
@@ -287,6 +332,69 @@ int main(int argc, char* argv[])
 			}
 		}
 		
+		int x, y;
+		
+		for (x = 0; x < SCREEN_WIDTH/SPRITE_SIZE; x++)
+		{
+			for (y = 0; y < SCREEN_HEIGHT/SPRITE_SIZE; y++)
+			{
+				if (g1.g[y][x] == 0 || g1.g[y][x] == 8)
+				{
+					rcGrass.x = x * SPRITE_SIZE; 
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(grass, NULL, screen, &rcGrass); 
+				}
+				else if (g1.g[y][x] == 5) 
+				{
+					rcGrass.x = x * SPRITE_SIZE; 
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(grass, NULL, screen, &rcGrass);
+					SDL_BlitSurface(fire, NULL, screen, &rcGrass);
+				}
+				else if (g1.g[y][x] == 9)
+				{
+					rcGrass.x = x * SPRITE_SIZE; 
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(heart, NULL, screen, &rcGrass);
+				}
+				else if (g1.g[y][x] == 3)
+				{
+					rcGrass.x = x * SPRITE_SIZE; 
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(eheart, NULL, screen, &rcGrass);
+				}
+				else if (g1.g[y][x] == 1) 
+				{
+					rcGrass.x = x * SPRITE_SIZE;
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(wall, NULL, screen, &rcGrass); 
+				}
+				else if (g1.g[y][x] == 6) 
+				{
+					rcGrass.x = x * SPRITE_SIZE;
+					rcGrass.y = y * SPRITE_SIZE;
+					SDL_BlitSurface(grass, NULL, screen, &rcGrass); 
+					SDL_BlitSurface(plife, NULL, screen, &rcGrass); 
+				}
+			}
+		}
+		
+		switch (pos)
+		{
+			case 'l' : SDL_BlitSurface(cloudl, NULL, screen, &rcSprite);
+					   break;
+					   
+			case 'u' : SDL_BlitSurface(cloudu, NULL, screen, &rcSprite);
+					   break;
+					   
+			case 'r' : SDL_BlitSurface(cloudr, NULL, screen, &rcSprite);
+					   break;
+					   
+			case 'd' : SDL_BlitSurface(cloudd, NULL, screen, &rcSprite);
+					   break;
+			
+			default : break;
+		}
 		
 		SDL_UpdateRect(screen,0,0,0,0);
 	}
@@ -298,6 +406,9 @@ int main(int argc, char* argv[])
 	SDL_FreeSurface(fire);
 	SDL_FreeSurface(grass);
 	SDL_FreeSurface(wall);
+	SDL_FreeSurface(heart);
+	SDL_FreeSurface(eheart);
+	SDL_FreeSurface(plife);
 	SDL_Quit();
 
 	return 0;

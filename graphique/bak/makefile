@@ -4,7 +4,7 @@ SDLFLAGS = `pkg-config --cflags --libs sdl --libs SDL_image`
 CFLAGS = -g -Wall
 EXE = main
 
-$(EXE) : main.o grille.o joueur.o
+$(EXE) : main2.o grille.o joueur.o
 	$(CC) $(SDLFLAGS) -o $@ $(CFLAGS) $^ $(C99) 
 
 grille.o : grille.c grille.h 
@@ -13,8 +13,10 @@ grille.o : grille.c grille.h
 joueur.o : joueur.c joueur.h
 	$(CC) -c $(CFLAGS) $<
 	
-main.o : main.c grille.h joueur.h
+main2.o : main2.c grille.h joueur.h
 	$(CC) $(SDLFLAGS) -c $(CFLAGS) $<
 
 clean:
+	rm *.o
 	rm $(EXE)
+	

@@ -6,7 +6,7 @@
 #include "SDL_image.h"
 
 #define SCREEN_WIDTH  320
-#define SCREEN_HEIGHT 288
+#define SCREEN_HEIGHT 320
 #define SPRITE_SIZE    32
 #define STEP_SIZE 32
 
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	j1.posm = 0;
 	posjoueur(g1, j1);
 		
-	SDL_Surface *screen, *temp, *sprite, *grass, *wall, *black; //Création de surfaces SDL
+	SDL_Surface *screen, *temp, *sprite, *grass, *wall; //Création de surfaces SDL
 	SDL_Rect rcSprite, rcGrass;
 	SDL_Event event;
 	Uint8 *keystate;
@@ -35,10 +35,6 @@ int main(int argc, char* argv[])
 	
 	temp   = SDL_LoadBMP("mushroom.bmp"); //Chargement du sprite mushroom.bmp dans la surface sprite
 	sprite = SDL_DisplayFormat(temp);
-	SDL_FreeSurface(temp);
-	
-	temp   = SDL_LoadBMP("black.bmp"); //Chargement du sprite black.bmp dans la surface sprite
-	black = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	
 	colorkey = SDL_MapRGB(screen->format, 255, 255, 255); //Création de la transparence du sprite
@@ -166,7 +162,7 @@ int main(int argc, char* argv[])
 		}
 		if (keystate[SDLK_DOWN] ) 
 		{
-			if (j1.posn+1 <= SCREEN_HEIGHT/STEP_SIZE) 
+			if (j1.posn+1 < SCREEN_HEIGHT/STEP_SIZE) 
 			{
 				if (g1.g[j1.posn+1][j1.posm] == 0)
 				{
@@ -205,7 +201,7 @@ int main(int argc, char* argv[])
 		
 		int x, y;
 		
-		for (x = 0; x < SCREEN_WIDTH/SPRITE_SIZE; x++)
+		for (x = 0; x <= SCREEN_WIDTH/SPRITE_SIZE; x++)
 		{
 			for (y = 0; y < SCREEN_HEIGHT/SPRITE_SIZE; y++)
 			{
